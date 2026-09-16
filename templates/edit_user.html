@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit User | TeamFlow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+<div class="app-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <span class="brand-icon">
+                ✦
+            </span>
+
+            <span>
+                TeamFlow
+            </span>
+
+        </div>
+
+
+        <nav>
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="nav-link"
+            >
+
+                <span>▦</span>
+
+                Dashboard
+
+            </a>
+
+
+            <a
+                href="{{ url_for('users') }}"
+                class="nav-link active"
+            >
+
+                <span>👥</span>
+
+                Manage Team
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="logged-user">
+
+                <div class="mini-avatar">
+
+                    {{ session["name"][0].upper() }}
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ session["name"] }}
+                    </strong>
+
+                    <small>
+                        Administrator
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-link"
+            >
+
+                ↪ Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="topbar">
+
+            <div>
+
+                <p class="welcome-label">
+                    Administration
+                </p>
+
+                <h1>
+                    Edit Team Member
+                </h1>
+
+                <p class="description">
+                    Update account information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- EDIT CARD -->
+
+        <section class="admin-card edit-card">
+
+
+            <div class="edit-header">
+
+                <div class="large-avatar">
+
+                    {{ user["name"][0].upper() }}
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ user["name"] }}
+                    </h2>
+
+                    <p>
+                        @{{ user["username"] }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <form
+                action="{{ url_for('update_user', user_id=user['id']) }}"
+                method="POST"
+                class="edit-form"
+            >
+
+
+                <!-- FULL NAME -->
+
+                <div class="form-field">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        value="{{ user['name'] }}"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- USERNAME -->
+
+                <div class="form-field">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        id="username"
+                        type="text"
+                        name="username"
+                        value="{{ user['username'] }}"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-field">
+
+                    <label for="password">
+                        New Password
+                    </label>
+
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Leave blank to keep current password"
+                    >
+
+                    <small class="field-help">
+                        Only enter a password if you want to change it.
+                    </small>
+
+                </div>
+
+
+
+                <!-- ROLE -->
+
+                <div class="form-field">
+
+                    <label for="role">
+                        Role
+                    </label>
+
+                    <select
+                        id="role"
+                        name="role"
+                    >
+
+                        <option
+                            value="member"
+                            {% if user["role"] == "member" %}
+                                selected
+                            {% endif %}
+                        >
+                            Member
+                        </option>
+
+
+                        <option
+                            value="admin"
+                            {% if user["role"] == "admin" %}
+                                selected
+                            {% endif %}
+                        >
+                            Admin
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ACTION BUTTONS -->
+
+                <div class="edit-actions">
+
+                    <a
+                        href="{{ url_for('users') }}"
+                        class="secondary-button"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

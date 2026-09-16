@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | TeamFlow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body
+    data-username="{{ session['username'] }}"
+    data-role="{{ session['role'] }}"
+>
+<div class="app-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <span class="brand-icon">
+                ✦
+            </span>
+
+            <span>
+                TeamFlow
+            </span>
+
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}"
+               class="nav-link active">
+
+                <span>▦</span>
+
+                Dashboard
+
+            </a>
+
+
+            {% if session["role"] == "admin" %}
+
+            <a href="{{ url_for('users') }}"
+               class="nav-link">
+
+                <span>👥</span>
+
+                Manage Team
+
+            </a>
+
+            {% endif %}
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="logged-user">
+
+                <div class="mini-avatar">
+
+                    {{ session["name"][0].upper() }}
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ session["name"] }}
+                    </strong>
+
+                    <small>
+                        {{ session["role"].title() }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}"
+               class="logout-link">
+
+                ↪ Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <p class="welcome-label">
+                    Team Dashboard
+                </p>
+
+                <h1>
+                    Good day, {{ session["name"] }} 👋
+                </h1>
+
+                <p class="description">
+                    Keep track of your team's availability.
+                </p>
+
+            </div>
+
+
+            <button
+                class="theme-button"
+                id="themeToggle"
+                title="Toggle dark mode"
+            >
+                🌙
+            </button>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-card-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Members
+                    </span>
+
+                    <strong id="totalMembers">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card available-stat">
+
+                <div class="stat-card-icon">
+                    🟢
+                </div>
+
+                <div>
+
+                    <span>
+                        Available
+                    </span>
+
+                    <strong id="availableMembers">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card busy-stat">
+
+                <div class="stat-card-icon">
+                    🟡
+                </div>
+
+                <div>
+
+                    <span>
+                        Busy / Meeting
+                    </span>
+
+                    <strong id="busyMembers">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card away-stat">
+
+                <div class="stat-card-icon">
+                    🔴
+                </div>
+
+                <div>
+
+                    <span>
+                        Away
+                    </span>
+
+                    <strong id="awayMembers">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TEAM SECTION -->
+
+        <section class="team-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Team Members
+                    </h2>
+
+                    <p>
+                        Update and monitor team availability.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FILTERS -->
+
+            <div class="filter-bar">
+
+                <div class="search-box">
+
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search by name or role..."
+                    >
+
+                </div>
+
+
+                <select id="statusFilter">
+
+                    <option value="all">
+                        All Status
+                    </option>
+
+                    <option value="available">
+                        🟢 Available
+                    </option>
+
+                    <option value="busy">
+                        🟡 Busy
+                    </option>
+
+                    <option value="meeting">
+                        🟣 In a Meeting
+                    </option>
+
+                    <option value="leave">
+                        🔵 On Leave
+                    </option>
+
+                    <option value="unavailable">
+                        🔴 Unavailable
+                    </option>
+
+                </select>
+
+
+                <select id="roleFilter">
+
+                    <option value="all">
+                        All Roles
+                    </option>
+
+                    <option value="admin">
+                        Admin
+                    </option>
+
+                    <option value="member">
+                        Member
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- CARDS -->
+
+            <div
+                class="team-grid"
+                id="teamContainer"
+            >
+
+                <div class="loading">
+                    Loading team members...
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast"
+>
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
